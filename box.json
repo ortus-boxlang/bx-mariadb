@@ -1,5 +1,5 @@
 {
-    "name":"BoxLang MySQL",
+    "name":"BoxLang MariaDB",
     "version":"@build.version@+@build.number@",
     "location"  : "https://downloads.ortussolutions.com/ortussolutions/boxlang-modules/bx-mariadb/@build.version@/bx-mariadb-@build.version@.zip",
     "author":"Ortus Solutions",

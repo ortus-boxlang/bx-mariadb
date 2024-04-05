@@ -16,7 +16,7 @@
 
 <p>&nbsp;</p>
 
-This module provides a BoxLang JDBC driver for MySQL.  This module is part of the BoxLang project.
+This module provides a BoxLang JDBC driver for MariaDB.  This module is part of the BoxLang project.
 
 ## Ortus Sponsors
 
