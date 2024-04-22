@@ -1,4 +1,4 @@
-name: BoxLang PostgreSQL Snapshots
+name: BoxLang MariaDB Snapshots
 
 on:
   push:

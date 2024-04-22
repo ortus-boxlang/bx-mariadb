@@ -107,8 +107,8 @@ public class MariaDBDriver extends GenericJDBCDriver {
 			    )
 			);
 		}
-		// Append the : to the protocol if it exists
 
+		// Append the : to the protocol if it exists
 		if ( protocol.length() > 0 ) {
 			protocol += ":";
 		}
