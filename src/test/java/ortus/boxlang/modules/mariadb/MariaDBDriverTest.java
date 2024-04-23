@@ -1,4 +1,4 @@
-package ortus.boxlang.modules.bxmariadb;
+package ortus.boxlang.modules.mariadb;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
