@@ -16,7 +16,9 @@
 	"boxlang": {
 		"moduleName": "mariadb"
 	},
-	"keywords": ["boxlang"],
+	"keywords": [
+		"boxlang"
+	],
 	"private": false,
 	"license": [
 		{
@@ -25,10 +27,9 @@
 		}
 	],
 	"devDependencies": {
+		"commandbox-boxlang": "*",
 		"commandbox-cfformat": "*",
 		"commandbox-docbox": "*",
-		"commandbox-dotenv": "*",
-		"commandbox-cfconfig": "*",
 		"testbox": "*"
 	},
 	"ignore": [
