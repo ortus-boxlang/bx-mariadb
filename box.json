@@ -3,20 +3,22 @@
 	"version": "@build.version@+@build.number@",
 	"location": "https://downloads.ortussolutions.com/ortussolutions/boxlang-modules/bx-mariadb/@build.version@/bx-mariadb-@build.version@.zip",
 	"author": "Ortus Solutions",
-	"homepage": "https://github.com/boxlang-modules/bx-mariadb",
-	"documentation": "https://github.com/boxlang-modules/bx-mariadb",
+	"homepage": "https://github.com/ortus-boxlang/bx-mariadb",
+	"documentation": "https://github.com/ortus-boxlang/bx-mariadb",
 	"repository": {
 		"type": "git",
-		"URL": "https://github.com/boxlang-modules/bx-mariadb"
+		"URL": "https://github.com/ortus-boxlang/bx-mariadb"
 	},
-	"bugs": "https://github.com/boxlang-modules/bx-mariadb/issues",
+	"bugs": "https://github.com/ortus-boxlang/bx-mariadb/issues",
 	"slug": "bx-mariadb",
 	"shortDescription": "Module template for BoxLang modules",
 	"type": "boxlang-modules",
 	"boxlang": {
 		"moduleName": "mariadb"
 	},
-	"keywords": ["boxlang"],
+	"keywords": [
+		"boxlang"
+	],
 	"private": false,
 	"license": [
 		{
@@ -25,10 +27,9 @@
 		}
 	],
 	"devDependencies": {
+		"commandbox-boxlang": "*",
 		"commandbox-cfformat": "*",
 		"commandbox-docbox": "*",
-		"commandbox-dotenv": "*",
-		"commandbox-cfconfig": "*",
 		"testbox": "*"
 	},
 	"ignore": [
