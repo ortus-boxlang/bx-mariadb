@@ -7,9 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * * *
 
-* * *
 
 ## [Unreleased]
+
+### updated
+
+- Bumps org.mariadb.jdbc:mariadb-java-client from 3.3.3 to 3.5.3.
 
 ## [1.1.0] - 2025-05-27
 
