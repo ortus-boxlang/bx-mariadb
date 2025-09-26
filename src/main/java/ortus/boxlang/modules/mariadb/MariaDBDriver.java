@@ -17,6 +17,7 @@
  */
 package ortus.boxlang.modules.mariadb;
 
+import java.sql.Struct;
 import java.util.Map;
 
 import ortus.boxlang.runtime.config.segments.DatasourceConfig;
@@ -25,7 +26,6 @@ import ortus.boxlang.runtime.jdbc.drivers.DatabaseDriverType;
 import ortus.boxlang.runtime.jdbc.drivers.GenericJDBCDriver;
 import ortus.boxlang.runtime.scopes.Key;
 import ortus.boxlang.runtime.types.IStruct;
-import ortus.boxlang.runtime.types.Struct;
 import ortus.boxlang.runtime.types.util.StructUtil;
 
 /**
@@ -78,7 +78,10 @@ public class MariaDBDriver extends GenericJDBCDriver {
 		// org.apache.derby.jdbc.ClientDriver For client connections
 		this.driverClassName		= "org.mariadb.jdbc.Driver";
 		this.defaultDelimiter		= "&";
-		this.defaultCustomParams	= Struct.of();
+		this.defaultCustomParams	= Struct.of(
+		    // This is required to return all generated keys on inserts.
+		    "returnMultiValuesGeneratedIds", true
+		);
 		this.defaultProperties		= DEFAULT_HIKARI_PROPERTIES;
 	}
 
