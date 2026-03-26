@@ -36,7 +36,7 @@ public class MariaDBDriverTest {
 		config.properties.put( "driver", "Mariadb" );
 		config.properties.put( "database", "mydb" );
 
-		String expectedURL = "jdbc:mariadb://localhost:3306/mydb?";
+		String expectedURL = "jdbc:mariadb://localhost:3306/mydb?returnMultiValuesGeneratedIds=true";
 		assertThat( driver.buildConnectionURL( config ) ).isEqualTo( expectedURL );
 	}
 
