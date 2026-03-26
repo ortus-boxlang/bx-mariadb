@@ -34,15 +34,17 @@ repositories {
 }
 
 dependencies {
-	// Until BoxLang is published to Maven Central
-	// Look for it in the local build directory
-	// You must run `./gradle build -x test` in the BoxLang project
-	if ( file( '../../boxlang/build/libs/boxlang-' + boxlangVersion + '.jar' ).exists() ) {
-		compileOnly files( '../../boxlang/build/libs/boxlang-' + boxlangVersion + '.jar' )
-		testImplementation files( '../../boxlang/build/distributions/boxlang-' + boxlangVersion + '.jar' )
-	} else {
-    	compileOnly files( 'src/test/resources/libs/boxlang-' + boxlangVersion + '.jar' )
-		testImplementation files( 'src/test/resources/libs/boxlang-' + boxlangVersion + '.jar' )
+	// BoxLang Runtime
+	println "+ Checking for BoxLang Jar in ../boxlang/build/libs/boxlang-${boxlangVersion}.jar"
+	if ( file( "../boxlang/build/libs/boxlang-${boxlangVersion}.jar" ).exists() ) {
+		// Run against a local BoxLang build
+		// You must run `./gradle build -x test` in the BoxLang project
+		compileOnly files( "../boxlang/build/libs/boxlang-${boxlangVersion}.jar" )
+		testImplementation files( "../boxlang/build/libs/boxlang-${boxlangVersion}.jar" )
+	} else if ( file( "src/test/resources/libs/boxlang-${boxlangVersion}.jar" ).exists() ) {
+		// Downloaded Dependencies
+		compileOnly files( "src/test/resources/libs/boxlang-${boxlangVersion}.jar" )
+		testImplementation files( "src/test/resources/libs/boxlang-${boxlangVersion}.jar" )
 	}
 
 	// https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client
