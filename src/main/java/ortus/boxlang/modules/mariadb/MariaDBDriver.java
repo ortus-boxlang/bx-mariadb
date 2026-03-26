@@ -17,7 +17,6 @@
  */
 package ortus.boxlang.modules.mariadb;
 
-import java.sql.Struct;
 import java.util.Map;
 
 import ortus.boxlang.runtime.config.segments.DatasourceConfig;
@@ -26,6 +25,7 @@ import ortus.boxlang.runtime.jdbc.drivers.DatabaseDriverType;
 import ortus.boxlang.runtime.jdbc.drivers.GenericJDBCDriver;
 import ortus.boxlang.runtime.scopes.Key;
 import ortus.boxlang.runtime.types.IStruct;
+import ortus.boxlang.runtime.types.Struct;
 import ortus.boxlang.runtime.types.util.StructUtil;
 
 /**
