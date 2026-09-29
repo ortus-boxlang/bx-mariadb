@@ -56,7 +56,7 @@ jobs:
           java-version: ${{ env.JDK }}
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v5
+        uses: gradle/actions/setup-gradle@v6
         with:
           gradle-version: ${{ env.GRADLE }}
 
@@ -98,7 +98,7 @@ jobs:
           gradle build -x test --stacktrace --console=plain
 
       - name: Commit Changelog [unreleased] with latest version
-        uses: EndBug/add-and-commit@v9.1.4
+        uses: EndBug/add-and-commit@v10.0.0
         if: env.SNAPSHOT == 'false'
         with:
           author_name: Github Actions
@@ -152,7 +152,7 @@ jobs:
           cd $GITHUB_WORKSPACE
 
       - name: Create Github Release
-        uses: taiki-e/create-gh-release-action@v1.9.1
+        uses: taiki-e/create-gh-release-action@v1.11.0
         continue-on-error: true
         if: env.SNAPSHOT == 'false'
         id: create_release
@@ -194,7 +194,7 @@ jobs:
           ref: development
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v5
+        uses: gradle/actions/setup-gradle@v6
         with:
           gradle-version: ${{ env.GRADLE }}
 
@@ -214,7 +214,7 @@ jobs:
           git pull
 
       - name: Commit Version Bump
-        uses: EndBug/add-and-commit@v9.1.4
+        uses: EndBug/add-and-commit@v10.0.0
         with:
           author_name: Github Actions
           author_email: info@ortussolutions.com
