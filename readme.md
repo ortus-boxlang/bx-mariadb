@@ -1,4 +1,4 @@
-# bx-mariadb
+# ⚡︎ BoxLang Module: MariaDB JDBC Driver
 
 ```
 |:------------------------------------------------------:|
