@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### 🐛 Fixed
+
+- `downloadBoxLang` now falls back to the stable BoxLang release jar when no snapshot exists for the configured `boxlangVersion`. BoxLang only publishes snapshots for its next dev version, so a `development` build against a released version (e.g. `1.17.6`) failed with a 404 and no snapshot was published.
+- Fixed the circular task dependency (`assemble` -> `shadowJar` -> `build`) that broke `./gradlew build` on Gradle 9, and declared that `createModuleStructure` depends on `jar`.
+
 ### 🛠 Build
 
 - CI now runs Gradle through the project wrapper (`./gradlew`) instead of the Gradle setup action and a separately pinned Gradle version.

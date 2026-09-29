@@ -17,6 +17,9 @@ plugins {
 ext {
 	buildID = System.getenv( 'BUILD_ID' ) ?: '0'
 	branch = System.getenv( 'BRANCH' ) ?: 'development'
+	// The stable BoxLang version (no prerelease suffix). BoxLang only publishes snapshots for its next dev version,
+	// so this is the fallback when the snapshot of the configured version does not exist.
+	boxlangStableVersion = boxlangVersion.replaceAll( /-.*/, '' )
 }
 
 if ( branch == 'development' ) {
@@ -34,15 +37,14 @@ repositories {
 dependencies {
 	// BoxLang Runtime
 	println "+ Checking for BoxLang Jar in ../boxlang/build/libs/boxlang-${boxlangVersion}.jar"
-	if ( file( "../boxlang/build/libs/boxlang-${boxlangVersion}.jar" ).exists() ) {
-		// Run against a local BoxLang build
-		// You must run `./gradle build -x test` in the BoxLang project
-		compileOnly files( "../boxlang/build/libs/boxlang-${boxlangVersion}.jar" )
-		testImplementation files( "../boxlang/build/libs/boxlang-${boxlangVersion}.jar" )
-	} else if ( file( "src/test/resources/libs/boxlang-${boxlangVersion}.jar" ).exists() ) {
-		// Downloaded Dependencies
-		compileOnly files( "src/test/resources/libs/boxlang-${boxlangVersion}.jar" )
-		testImplementation files( "src/test/resources/libs/boxlang-${boxlangVersion}.jar" )
+	// The snapshot jar wins, the stable jar is what downloadBoxLang falls back to when no snapshot exists
+	def bxJarNames = [ boxlangVersion, boxlangStableVersion ].unique().collect { "boxlang-${it}.jar" }
+	def bxJar = bxJarNames.collect { file( "../boxlang/build/libs/${it}" ) }.find { it.exists() }
+		?: bxJarNames.collect { file( "src/test/resources/libs/${it}" ) }.find { it.exists() && it.length() > 0 }
+	if ( bxJar ) {
+		// Either a local BoxLang build (run `./gradlew build -x test` in the BoxLang project) or the downloaded jar
+		compileOnly files( bxJar )
+		testImplementation files( bxJar )
 	}
 
 	// https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client
@@ -135,7 +137,6 @@ shadowJar {
     mergeServiceFiles()
     destinationDirectory = file( "build/libs" )
 }
-build.finalizedBy( shadowJar )
 
 /**
  * Source Code Formatting
@@ -157,6 +158,7 @@ spotless {
  * - Copies the src/main/bx/** to build/module/ folder.
  */
 task createModuleStructure(type: Copy) {
+    dependsOn jar
     from( 'build/libs' ) {
 		include "${project.name}-${version}.jar"
         into 'libs'
@@ -208,20 +210,49 @@ test {
 }
 
 /**
- * TEMPORARY until we publish to maven
- * Task to download the latest jar from https://ortus-temp.s3.amazonaws.com/jericho/libs/boxlang-1.0.0.jar
+ * Checks if a URL exists with a HEAD request
+ */
+project.ext.urlExists = { String url ->
+	try {
+		def conn = new URL( url ).openConnection()
+		conn.requestMethod = 'HEAD'
+		conn.connectTimeout = 15000
+		conn.readTimeout = 15000
+		return conn.responseCode == 200
+	} catch ( Exception e ) {
+		return false
+	}
+}
+
+/**
+ * Downloads the BoxLang jar used to compile and test against.
+ * On development we want the snapshot of the configured version, but BoxLang only publishes snapshots for its next
+ * dev version. If the snapshot does not exist we fall back to the stable release jar of the same version.
  */
 task downloadBoxLang( type: Download ) {
+	def bxBase = "https://downloads.ortussolutions.com/ortussolutions/boxlang"
+	// Resolved once, lazily, when the task runs so nothing hits the network at configuration time
+	def bxResolved = null
+	def resolveBoxLangVersion = {
+		if ( bxResolved == null ) {
+			bxResolved = boxlangVersion
+			if ( boxlangVersion != boxlangStableVersion && !project.urlExists( "${bxBase}/${boxlangVersion}/boxlang-${boxlangVersion}.jar" ) ) {
+				logger.lifecycle( "+ No BoxLang snapshot found for ${boxlangVersion}, falling back to the stable ${boxlangStableVersion} release" )
+				bxResolved = boxlangStableVersion
+			}
+		}
+		return bxResolved
+	}
 	// Create the destination directory
 	doFirst {
 		file( "src/test/resources/libs" ).mkdirs()
 	}
-    // Configure the URL of the file to download
-    src "https://downloads.ortussolutions.com/ortussolutions/boxlang/${boxlangVersion}/boxlang-${boxlangVersion}.jar"
-    // Specify the destination directory for the downloaded file
-    dest "src/test/resources/libs/boxlang-${boxlangVersion}.jar"
-    overwrite true
-    onlyIfModified false
+	// Configure the URL of the file to download
+	src { "${bxBase}/${resolveBoxLangVersion()}/boxlang-${resolveBoxLangVersion()}.jar" }
+	// Specify the destination directory for the downloaded file
+	dest { "src/test/resources/libs/boxlang-${resolveBoxLangVersion()}.jar" }
+	overwrite true
+	onlyIfModified false
 }
 
 /**
