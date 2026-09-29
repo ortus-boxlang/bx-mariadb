@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import ortus.boxlang.runtime.config.segments.DatasourceConfig;
 import ortus.boxlang.runtime.jdbc.drivers.DatabaseDriverType;
 import ortus.boxlang.runtime.scopes.Key;
+import ortus.boxlang.runtime.types.Struct;
 
 public class MariaDBDriverTest {
 
@@ -36,8 +37,27 @@ public class MariaDBDriverTest {
 		config.properties.put( "driver", "Mariadb" );
 		config.properties.put( "database", "mydb" );
 
-		String expectedURL = "jdbc:mariadb://localhost:3306/mydb?returnMultiValuesGeneratedIds=true";
-		assertThat( driver.buildConnectionURL( config ) ).isEqualTo( expectedURL );
+		String url = driver.buildConnectionURL( config );
+		assertThat( url ).startsWith( "jdbc:mariadb://localhost:3306/mydb?" );
+		assertThat( url ).contains( "returnMultiValuesGeneratedIds=true" );
+		assertThat( url ).contains( "prepStmtCacheSize=250" );
+		assertThat( url ).contains( "cachePrepStmts=true" );
+		assertThat( url ).doesNotContain( "rewriteBatchedStatements" );
+	}
+
+	@DisplayName( "User custom params override the defaults" )
+	@Test
+	public void testCustomParamsOverrideDefaults() {
+		MariaDBDriver		driver	= new MariaDBDriver();
+		DatasourceConfig	config	= new DatasourceConfig();
+		config.properties.put( "database", "mydb" );
+		config.properties.put( "custom", Struct.of( "useServerPrepStmts", false, "connectTimeout", 5000 ) );
+
+		String url = driver.buildConnectionURL( config );
+		assertThat( url ).contains( "useServerPrepStmts=false" );
+		assertThat( url ).doesNotContain( "useServerPrepStmts=true" );
+		assertThat( url ).contains( "connectTimeout=5000" );
+		assertThat( url ).contains( "cachePrepStmts=true" );
 	}
 
 	@DisplayName( "Throw an exception if the database is not found" )
