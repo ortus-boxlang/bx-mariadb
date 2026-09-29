@@ -43,24 +43,20 @@ public class MariaDBDriver extends GenericJDBCDriver {
 	);
 
 	/**
-	 * Default Hikari Properties For MariaDB Performance
-	 * https://cdn.oreillystatic.com/en/assets/1/event/21/Connector_J%20Performance%20Gems%20Presentation.pdf
+	 * Default connection URL parameters for MariaDB performance.
+	 * Only options supported by the MariaDB Connector/J are included.
+	 * They can be overridden by the datasource's `custom` struct.
 	 */
-	protected static final IStruct				DEFAULT_HIKARI_PROPERTIES	= Struct.of(
+	protected static final IStruct				DEFAULT_CUSTOM_PARAMS		= Struct.of(
+	    // This is required to return all generated keys on inserts.
+	    "returnMultiValuesGeneratedIds", true,
 	    // This sets the number of prepared statements that the driver will cache per connection
 	    "prepStmtCacheSize", 250,
-	    // This is the maximum length of a prepared SQL statement that the driver will cache
-	    "prepStmtCacheSqlLimit", 2048,
-	    // Neither of the above parameters have any effect if the cache is in fact disabled, as it is by default
+	    // Without this, the prepared statement cache above has no effect
 	    "cachePrepStmts", true,
 	    // If available, use it to get a big boost in performance
 	    "useServerPrepStmts", true,
-	    "useLocalSessionState", true,
-	    "rewriteBatchedStatements", true,
-	    "cacheResultSetMetadata", true,
-	    "cacheServerConfiguration", true,
-	    "elideSetAutoCommits", true,
-	    "maintainTimeStats", false
+	    "useLocalSessionState", true
 	);
 
 	/**
@@ -78,11 +74,8 @@ public class MariaDBDriver extends GenericJDBCDriver {
 		// org.apache.derby.jdbc.ClientDriver For client connections
 		this.driverClassName		= "org.mariadb.jdbc.Driver";
 		this.defaultDelimiter		= "&";
-		this.defaultCustomParams	= Struct.of(
-		    // This is required to return all generated keys on inserts.
-		    "returnMultiValuesGeneratedIds", true
-		);
-		this.defaultProperties		= DEFAULT_HIKARI_PROPERTIES;
+		this.defaultCustomParams	= DEFAULT_CUSTOM_PARAMS;
+		this.defaultProperties		= Struct.of();
 	}
 
 	@Override

@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### 🔄 Changed
+
+- Performance defaults supported by MariaDB Connector/J (`prepStmtCacheSize`, `cachePrepStmts`, `useServerPrepStmts`, `useLocalSessionState`) are now default JDBC URL params (`defaultCustomParams`) instead of default Hikari properties, so they can be overridden via the datasource `custom` struct.
+- Removed MySQL-only defaults that MariaDB Connector/J does not support.
+- Readme now documents the default connection parameters.
+- PR workflow now uses a concurrency group to avoid duplicate runs.
+
 ## [1.2.0] - 2025-06-24
 
 ### updated

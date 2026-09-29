@@ -12,6 +12,12 @@ on:
       - "releases/v*"
       - development
 
+# Cancel duplicate runs: a branch push and its PR event share the same group
+# (head_ref is the branch on pull_request events, ref_name on push events)
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
 jobs:
   tests:
     permissions:
