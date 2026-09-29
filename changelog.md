@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Performance defaults supported by MariaDB Connector/J (`prepStmtCacheSize`, `cachePrepStmts`, `useServerPrepStmts`, `useLocalSessionState`) are now default JDBC URL params (`defaultCustomParams`) instead of default Hikari properties, so they can be overridden via the datasource `custom` struct.
 - Removed MySQL-only defaults that MariaDB Connector/J does not support.
 - Readme now documents the default connection parameters.
-- PR workflow now uses a concurrency group to avoid duplicate runs. The format check job now runs on `ubuntu-latest` (the retired `ubuntu-20.04` runner left the PR workflow queued forever).
+- PR workflow now uses a concurrency group to avoid duplicate runs. The format check job now runs on `ubuntu-latest` (the retired `ubuntu-20.04` runner left the PR workflow queued forever). Removed the CommandBox `format:check` step (no such script exists; `./gradlew spotlessCheck` is the format check).
 
 ## [1.2.0] - 2025-06-24
 
