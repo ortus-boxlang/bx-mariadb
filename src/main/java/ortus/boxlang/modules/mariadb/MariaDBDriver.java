@@ -34,8 +34,8 @@ import ortus.boxlang.runtime.types.util.StructUtil;
  */
 public class MariaDBDriver extends GenericJDBCDriver {
 
-	protected static final String				DEFAULT_PROTOCOL			= "";
-	protected static final Map<String, String>	AVAILABLE_PROTOCOLS			= Map.of(
+	protected static final String				DEFAULT_PROTOCOL		= "";
+	protected static final Map<String, String>	AVAILABLE_PROTOCOLS		= Map.of(
 	    "failover", "Alias of the loadbalance HA mode",
 	    "loadbalance", "Balances read and write load between configured nodes",
 	    "replication", "Balances read and write load between configured primary servers. Balances read load between configured replica servers",
@@ -47,7 +47,7 @@ public class MariaDBDriver extends GenericJDBCDriver {
 	 * Only options supported by the MariaDB Connector/J are included.
 	 * They can be overridden by the datasource's `custom` struct.
 	 */
-	protected static final IStruct				DEFAULT_CUSTOM_PARAMS		= Struct.of(
+	protected static final IStruct				DEFAULT_CUSTOM_PARAMS	= Struct.of(
 	    // This is required to return all generated keys on inserts.
 	    "returnMultiValuesGeneratedIds", true,
 	    // This sets the number of prepared statements that the driver will cache per connection
@@ -62,7 +62,7 @@ public class MariaDBDriver extends GenericJDBCDriver {
 	/**
 	 * The protocol in use for the jdbc connection
 	 */
-	protected String							protocol					= DEFAULT_PROTOCOL;
+	protected String							protocol				= DEFAULT_PROTOCOL;
 
 	/**
 	 * Constructor
